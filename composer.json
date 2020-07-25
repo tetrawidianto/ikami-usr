@@ -1,0 +1,26 @@
+{
+    "name": "tetrawidianto/ikami-usr",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tetra Widianto",
+            "email": "tetraw86@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "livewire/livewire": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "IkamiUsr\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "IkamiUsr\\IkamiUsrServiceProvider"
+            ]
+        }
+    }
+}
