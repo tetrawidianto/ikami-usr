@@ -57,7 +57,6 @@
         <!-- /.card-body -->
       </div>
 
-      @if($uAsesmen->terjawabSemua())
 	  <div class="card">
   		<div class="card-header">
   			<div class="card-title">
@@ -115,7 +114,7 @@
   		</div>
   		@endif
       </div>
-      @endif
+      
 	</div>
 
 	<div class="col-md-6">
@@ -395,7 +394,7 @@
 					Statistik
 				</div>
 			</div>
-			<div wire:ignore class="card-body">
+			<div wire:ignore wire:key="first" class="card-body">
 				<canvas id="radarChart"></canvas>
 			</div>
 		</div>
