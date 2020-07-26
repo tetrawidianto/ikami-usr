@@ -82,7 +82,7 @@
       	<div class="form-group" @if(!$aktivasi) style="display: none;" @endif>
       		<label class="control-label">Pilih Instansi/Perusahaan:</label>
       		
-      		<div wire:ignore>
+      		<div wire:ignore wire:key="first">
       			<select id="penyedia-terpilih-select2" class="form-control select2 @error('namaSingkat') is-invalid @enderror">
 	      			<option></option>
 	      			@foreach($daftarPenyedia as $penyedia)

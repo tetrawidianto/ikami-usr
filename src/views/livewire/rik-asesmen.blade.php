@@ -431,7 +431,7 @@
 					Statistik
 				</div>
 			</div>
-			<div wire:ignore class="card-body">
+			<div wire:ignore wire:key="first" class="card-body">
 				<canvas id="radarChart"></canvas>
 			</div>
 		</div>
