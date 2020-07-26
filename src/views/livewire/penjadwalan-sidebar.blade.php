@@ -85,7 +85,7 @@
 					</div>
 					<div class="form-group">
 						<label class="control-label">Asesor:</label>
-						<div wire:ignore>
+						<div wire:ignore wire:key="first">
 						<select class="form-control select2 @error('asesor') is-invalid @enderror" multiple>
 							{{-- <option ></option> --}}
 							@foreach($listAsesor as $asesor)
@@ -133,7 +133,7 @@
 					</div>
 					<div class="form-group">
 						<label class="control-label">Asesor:</label>
-						<div wire:ignore>
+						<div wire:ignore wire:ignore="second">
 						<select class="form-control select2 @error('asesor') is-invalid @enderror" multiple>
 							{{-- <option ></option> --}}
 							@foreach($listAsesor as $asesor)
