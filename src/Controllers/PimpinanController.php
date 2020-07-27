@@ -31,16 +31,16 @@ class PimpinanController extends Controller
     	// $cukupBaik = $asesmen->where('opini_id', 3)->count();
     	// $baik = $asesmen->where('opini_id', 4)->count();
 
-        $listSistemEl = SistemEl::with('latestDa')->get();
+        $listSistemEl = SistemEl::with('latestDa')->whereHas('latestDa')->get();
 
-        $rendah = $listSistemEl->where('kategori_sistem_el_id', 1)->count();
-        $tinggi = $listSistemEl->where('kategori_sistem_el_id', 2)->count();
-        $strategis = $listSistemEl->where('kategori_sistem_el_id', 3)->count();
+        $rendah = $listSistemEl->where('latestDa.kategori_sistem_el_id', 1)->count();
+        $tinggi = $listSistemEl->where('latestDa.kategori_sistem_el_id', 2)->count();
+        $strategis = $listSistemEl->where('latestDa.kategori_sistem_el_id', 3)->count();
 
-        $tidakLayak = $listSistemEl->where('opini_id', 1)->count();
-        $kerangkaKerjaDasar = $listSistemEl->where('opini_id', 2)->count();
-        $cukupBaik = $listSistemEl->where('opini_id', 3)->count();
-        $baik = $listSistemEl->where('opini_id', 4)->count();
+        $tidakLayak = $listSistemEl->where('latestDa.opini_id', 1)->count();
+        $kerangkaKerjaDasar = $listSistemEl->where('latestDa.opini_id', 2)->count();
+        $cukupBaik = $listSistemEl->where('latestDa.opini_id', 3)->count();
+        $baik = $listSistemEl->where('latestDa.opini_id', 4)->count();
 
     	$listSektor = Sektor::withCount('sistemEl')->get();
     	
