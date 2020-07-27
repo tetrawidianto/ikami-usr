@@ -15,8 +15,22 @@ class IkamiUsrServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        Route::group($this->webRoute(), function () {
-            $this->loadRoutesFrom(__DIR__.'/routes/web.php');
+        $this->publishes([
+            __DIR__.'/public/uploads/logo-bssn.jpg' => public_path('uploads/logo-bssn.jpg'),
+            __DIR__.'/public/uploads/img/photo1.png' => public_path('uploads/img/photo1.png'),
+            __DIR__.'/config/adminlte.php' => config_path('adminlte.php'),
+            __DIR__.'/views/auth/auth-page.blade.php' => resource_path('views/vendor/adminlte/auth/auth-page.blade.php'),
+            __DIR__.'/views/master.blade.php' => resource_path('views/vendor/adminlte/master.blade.php'),
+            __DIR__.'/views/partials/navbar/navbar.blade.php' => resource_path('views/vendor/adminlte/partials/navbar/navbar.blade.php'),
+            __DIR__.'/views/partials/sidebar/menu-item-link.blade.php' => resource_path('views/vendor/adminlte/partials/sidebar/menu-item-link.blade.php'),
+            __DIR__.'/js/bootstrap.js' => resource_path('js/bootstrap.js'),
+            __DIR__.'/sass/app.scss' => resource_path('sass/app.scss'),
+            __DIR__.'/webpack.mix.js' => base_path('webpack.mix.js'),
+            __DIR__.'/routes/web.php' => base_path('routes/web.php'),
+        ], 'ikami-usr');
+
+        Route::group($this->appRoute(), function () {
+            $this->loadRoutesFrom(__DIR__.'/routes/app.php');
         });
 
         Route::group($this->livewireRoute(), function () {
@@ -39,7 +53,7 @@ class IkamiUsrServiceProvider extends ServiceProvider
         Livewire::component('monitoring', \IkamiUsr\Livewire\Monitoring::class);
     }
 
-    private function webRoute()
+    private function appRoute()
     {
         return [
             'middleware' => ['web', 'auth', 'verified'],
