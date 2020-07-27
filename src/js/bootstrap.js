@@ -10,7 +10,7 @@ try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
 
-    require('ikami-pkg');
+    require('overlayscrollbars');
 
     // Select2
     require('../../public/vendor/select2/js/select2');
