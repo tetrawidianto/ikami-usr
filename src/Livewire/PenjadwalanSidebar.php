@@ -74,7 +74,8 @@ class PenjadwalanSidebar extends Component
 		$asesmen = Asesmen::with('asesor')->find($this->itemId);
 
 		$this->tanggal = $asesmen->jadwal->toDateString();
-		$this->waktu = date('h:i', strtotime($asesmen->waktu));
+		// $this->waktu = date('h:i', strtotime($asesmen->waktu));
+		$this->waktu = $asesmen->jadwal->toTimeString();
 		$this->tempat = $asesmen->tempat;
 		$this->location = $asesmen->location;
 		$this->asesor = $asesmen->asesor->pluck('id')->toArray();
@@ -94,7 +95,7 @@ class PenjadwalanSidebar extends Component
 	public function ubahJadwal()
 	{
 		$this->validate([
-			'tanggal' => 'required|date|after:' . Carbon::today()->toDateString() . '|before_or_equal:' . Carbon::today()->addDays(env('MAX_DATE_DA'))->toDateString(),
+			'tanggal' => 'required|date|after:' . Carbon::yesterday()->toDateString() . '|before_or_equal:' . Carbon::today()->addDays(env('MAX_DATE_DA'))->toDateString(),
 			'waktu' => 'required',
 			'tempat' => 'required',
 			'location' => 'required',
@@ -105,7 +106,7 @@ class PenjadwalanSidebar extends Component
 
 		$asesmen->update([
 			'jadwal' => $this->tanggal.'T'.$this->waktu,
-			'waktu' => $this->waktu,
+			// 'waktu' => $this->waktu,
 			'tempat' => $this->tempat,
 			'location' => $this->location
 		]);
