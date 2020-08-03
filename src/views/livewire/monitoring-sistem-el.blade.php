@@ -32,7 +32,7 @@
 	<div class="card card-primary card-outline">
 		<div class="card-header">
 			<div class="card-title">
-				Monitoring Sistem Elektronik
+				Daftar Sistem Elektronik
 				<button wire:click="$refresh" wire:loading.remove wire:target="$refresh" class="btn btn-sm"><i class="fas fa-sync-alt"></i></button>
 				<div wire:loading wire:target="$refresh" class="spinner-border spinner-border-sm text-primary" role="status">
 				  <span class="sr-only">Loading...</span>

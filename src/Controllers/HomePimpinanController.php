@@ -11,7 +11,7 @@ use IkamiAdm\Models\Penyedia;
 use IkamiAdm\Models\Sektor;
 use IkamiAdm\Models\SistemEl;
 
-class PimpinanController extends Controller
+class HomePimpinanController extends Controller
 {
     public function index()
     {

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use IkamiAdm\Models\Asesmen;
 use IkamiAdm\Models\User;
 
-class AsesmenController extends Controller
+class SaController extends Controller
 {
     public function index(Asesmen $asesmen)
     {

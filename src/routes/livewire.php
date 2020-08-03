@@ -15,8 +15,8 @@ Route::group(['layout' => 'ikami-usr::layouts.master', 'section' => 'content_bod
 });
 
 Route::group(['layout' => 'ikami-usr::layouts.master', 'section' => 'content_body', 'middleware' => 'role:admin'], function() {
-	Route::livewire('/penjadwalan-da', 'penjadwalan');
-
+	Route::livewire('/monitoring-da', 'monitoring-da');
+	Route::livewire('/monitoring-va', 'monitoring-va');
 });
 
 Route::group(['layout' => 'ikami-usr::layouts.master', 'section' => 'content_body', 'middleware' => 'role:asesor'], function() {
@@ -25,6 +25,6 @@ Route::group(['layout' => 'ikami-usr::layouts.master', 'section' => 'content_bod
 });
 
 Route::group(['layout' => 'ikami-usr::layouts.master', 'section' => 'content_body', 'middleware' => 'role:pimpinan'], function() {
-	Route::livewire('/monitoring-sistem-el', 'monitoring');
+	Route::livewire('/monitoring-sistem-el', 'monitoring-sistem-el');
 
 });

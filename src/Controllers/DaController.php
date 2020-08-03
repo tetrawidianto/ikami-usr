@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use IkamiAdm\Models\Asesmen;
 use IkamiAdm\Models\User;
 
-class AsesorController extends Controller
+class DaController extends Controller
 {
     public function index()
     {

@@ -9,7 +9,7 @@ use IkamiAdm\Models\Opini;
 use IkamiAdm\Models\Sektor;
 use IkamiAdm\Models\SistemEl;
 
-class Monitoring extends Component
+class MonitoringSistemEl extends Component
 {
 	use WithPagination;
 
@@ -57,7 +57,7 @@ class Monitoring extends Component
 			->latest()
 			->paginate(10);
 
-		return view('ikami-usr::livewire.monitoring', [
+		return view('ikami-usr::livewire.monitoring-sistem-el', [
 			'listSistemEl' => $listSistemEl,
 			'listSektor' => $listSektor,
 			'listKategori' => $listKategori,

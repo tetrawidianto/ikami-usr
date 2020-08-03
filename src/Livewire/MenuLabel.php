@@ -44,7 +44,7 @@ class MenuLabel extends Component
 			case 'ver-asesi':
 				$x = Asesi::currentStatus(Status::MENUNGGU)->count();
 				break;
-			case 'penjadwalan-da':
+			case 'monitoring-da':
 				$x = Asesmen::whereHas('sistemEl', function($query) use ($sektor) {
 					$query->where('sektor_id', $sektor->id);
 				})->currentStatus(Status::MASUK)->count();

@@ -9,7 +9,7 @@ use IkamiAdm\Models\Asesmen;
 use IkamiAdm\Models\Badge;
 use IkamiAdm\Models\Status;
 
-class PenjadwalanSidebar extends Component
+class MonitoringDaSidebar extends Component
 {
 	public $itemId;
 	public $tanggal;
@@ -42,7 +42,7 @@ class PenjadwalanSidebar extends Component
 
 		$listAsesor = User::role('asesor')->get(['id', 'name']);
 
-		return view('ikami-usr::livewire.penjadwalan-sidebar', [
+		return view('ikami-usr::livewire.monitoring-da-sidebar', [
 			'model' => $model,
 			'listAsesor' => $listAsesor
 		]);
@@ -51,7 +51,7 @@ class PenjadwalanSidebar extends Component
 	public function closeSidebar()
 	{
 		$this->batalUbahPenjadwalan();
-		$this->emitTo('penjadwalan', 'sidebarClosed');
+		$this->emitTo('monitoring-da', 'sidebarClosed');
 	}
 
 	public function loadData($itemId)
@@ -65,7 +65,7 @@ class PenjadwalanSidebar extends Component
 
 		$asesmen->setStatus(Status::TERJADWAL, Badge::TERJADWAL);
 
-		$this->emitTo('penjadwalan', 'statusUpdated');
+		$this->emitTo('monitoring-da', 'statusUpdated');
 		$this->emitTo('menu-label', 'statusUpdated');
 	}
 

@@ -1,5 +1,15 @@
 <div>
 	<form class="form-inline">
+      <div class="form-group m-1">
+        <label class="control-label">Versi:</label>
+        <select wire:model="versi" class="form-control">
+          <option value="">Semua</option>
+          @foreach($listVersi as $versi)
+			<option value="{{ $versi->id }}">{{ $versi->kode }}</option>
+          @endforeach
+        </select>
+      </div>
+
       <div class="custom-control custom-checkbox mx-1">
         <input wire:model="masuk" class="custom-control-input" type="checkbox" id="customCheckbox1" checked>
         <label for="customCheckbox1" class="custom-control-label text-danger">masuk</label>
@@ -83,5 +93,5 @@
 </div>
 
 @section('right-sidebar')
-	@livewire('penjadwalan-sidebar')
+	@livewire('monitoring-da-sidebar')
 @endsection

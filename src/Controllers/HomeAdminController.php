@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use IkamiAdm\Models\Status;
 use IkamiAdm\Models\User;
 
-class PenjadwalanController extends Controller
+class HomeAdminController extends Controller
 {
     public function index()
     {

@@ -253,7 +253,7 @@ return [
             'url' => 'asesmen',
             'icon' => 'fas fa-check',
             'active' => ['asesmen*'],
-            'can' => 'registrasi-asesmen'
+            'can' => 'self-assessment'
         ],
         // verifikator
         [
@@ -294,12 +294,12 @@ return [
         ],
         // admin
         [
-            'text' => 'Penjadwalan DA',
-            'url' => 'penjadwalan-da',
+            'text' => 'Monitoring DA',
+            'url' => 'monitoring-da',
             'icon' => 'far fa-calendar-alt',
-            'active' => ['penjadwalan-da*'],
-            'can' => 'penjadwalan-da',
-            'label' => 'penjadwalan-da',
+            'active' => ['monitoring-da*'],
+            'can' => 'monitoring-da',
+            'label' => 'monitoring-da',
             'label_color' => 'danger'
         ],
         [

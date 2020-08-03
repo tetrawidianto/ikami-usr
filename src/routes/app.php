@@ -6,9 +6,9 @@ Route::get('/pengaturan-awal', 'HomeController@pengaturanAwal')->name('pengatura
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'role:pengguna'], function() {
-	Route::get('/asesmen/{asesmen}', 'AsesmenController@index')->name('asesmen-index');
+	Route::get('/asesmen/{asesmen}', 'SaController@index')->name('sa-index');
 
-	Route::get('/berita-acara-pengguna/{asesmen}', 'AsesmenController@previewBeritaAcara')->name('berita-acara-pengguna');
+	Route::get('/ba-pengguna/{asesmen}', 'SaController@previewBeritaAcara')->name('ba-pengguna');
 });
 
 Route::group(['middleware' => 'role:verifikator'], function() {
@@ -19,18 +19,18 @@ Route::group(['middleware' => 'role:verifikator'], function() {
 });
 
 Route::group(['middleware' => 'role:admin'], function() {
-	Route::get('/home-admin', 'PenjadwalanController@index')->name('home-admin');
+	Route::get('/home-admin', 'HomeAdminController@index')->name('home-admin');
 	
 });
 
 Route::group(['middleware' => 'role:asesor'], function() {
-	Route::get('/home-asesor', 'AsesorController@index')->name('home-asesor');
-	Route::get('/desktop-assessment/{asesmen}', 'AsesorController@show')->name('desktop-assessment-index');
+	Route::get('/home-asesor', 'DaController@index')->name('da-index');
+	Route::get('/da/{asesmen}', 'DaController@show')->name('da-show');
 	
-	Route::get('/berita-acara-asesor/{asesmen}', 'AsesorController@previewBeritaAcara')->name('berita-acara-asesor');
+	Route::get('/ba-asesor/{asesmen}', 'DaController@previewBeritaAcara')->name('ba-asesor');
 });
 
 Route::group(['middleware' => 'role:pimpinan'], function() {
-	Route::get('/home-pimpinan', 'PimpinanController@index')->name('home-pimpinan');
+	Route::get('/home-pimpinan', 'HomePimpinanController@index')->name('home-pimpinan');
 	
 });

@@ -46,11 +46,12 @@ class IkamiUsrServiceProvider extends ServiceProvider
         Livewire::component('verifikasi', \IkamiUsr\Livewire\Verifikasi::class);
         Livewire::component('ver-sidebar', \IkamiUsr\Livewire\VerSidebar::class);
         Livewire::component('menu-label', \IkamiUsr\Livewire\MenuLabel::class);
-        Livewire::component('penjadwalan', \IkamiUsr\Livewire\Penjadwalan::class);
-        Livewire::component('penjadwalan-sidebar', \IkamiUsr\Livewire\PenjadwalanSidebar::class);
+        Livewire::component('monitoring-da', \IkamiUsr\Livewire\MonitoringDa::class);
+        Livewire::component('monitoring-va', \IkamiUsr\Livewire\MonitoringVa::class);
+        Livewire::component('monitoring-da-sidebar', \IkamiUsr\Livewire\MonitoringDaSidebar::class);
         Livewire::component('desktop-assessment', \IkamiUsr\Livewire\DesktopAssessment::class);
         Livewire::component('rik-asesmen', \IkamiUsr\Livewire\RikAsesmen::class);
-        Livewire::component('monitoring', \IkamiUsr\Livewire\Monitoring::class);
+        Livewire::component('monitoring-sistem-el', \IkamiUsr\Livewire\MonitoringSistemEl::class);
     }
 
     private function appRoute()

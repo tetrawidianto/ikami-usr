@@ -473,7 +473,7 @@
 			<div class="card-body">
 				<ul class="list-group">
 				  <li class="list-group-item d-flex justify-content-between align-items-center">
-						<a href="javascript:void(0)" onclick="window.open('{{ route('berita-acara-asesor', $uAsesmen->id)  }}', 'ikami-preview', 'height=800,width=600')">Berita Acara</a>
+						<a href="javascript:void(0)" onclick="window.open('{{ route('ba-asesor', $uAsesmen->id)  }}', 'ikami-preview', 'height=800,width=600')">Berita Acara</a>
 					@if(!$uAsesmen->selesai)
 					<a wire:loading.remove wire:target="hapusBeritaAcara" wire:click="hapusBeritaAcara" href="javascript:void(0)" class="text-danger">
 						<span class="fas fa-times"></span>

@@ -7,13 +7,15 @@ use Livewire\WithPagination;
 use IkamiAdm\Models\Asesmen;
 use IkamiAdm\Models\Status;
 use IkamiAdm\Models\User;
+use IkamiAdm\Models\Versi;
 
-class Penjadwalan extends Component
+class MonitoringDa extends Component
 {
 	use WithPagination;
 
 	public $isOpen = false;
 	public $itemId;
+	public $versi = '';
 	public $masuk =true;
 	public $terjadwal = true;
 	public $berlangsung = true;
@@ -54,12 +56,23 @@ class Penjadwalan extends Component
 				$query->where('sektor_id', $sektor->id)
 					->where('nama', 'like', $searchTerm);
 			})
+			->where(function($query) {
+				if($this->versi != '')
+				{
+					$query->whereHas('versi', function($query) {
+						$query->where('id', $this->versi);
+					});
+				}
+			})
 			->currentStatus($status)
 			->latest()
-			->get();
+			->paginate(10);
 
-		return view('ikami-usr::livewire.penjadwalan', [
-			'listAsesmen' => $listAsesmen
+		$listVersi = Versi::get(['id', 'kode']);
+
+		return view('ikami-usr::livewire.monitoring-da', [
+			'listAsesmen' => $listAsesmen,
+			'listVersi' => $listVersi
 		]);
 	}
 
@@ -73,7 +86,7 @@ class Penjadwalan extends Component
 		{
 			$this->isOpen = true;
 			$this->itemId = $itemId;
-			$this->emitTo('penjadwalan-sidebar', 'loadData', $itemId);
+			$this->emitTo('monitoring-da-sidebar', 'loadData', $itemId);
 		}
 	}
 

@@ -52,7 +52,7 @@
               <tbody>
                 @foreach($listAsesmen as $asesmen)
                 <tr style="transform: rotate(0);">
-                	<td><a href="{{ url('/desktop-assessment/'.$asesmen->id) }}" class="stretched-link"></a>{{ $asesmen->sistemEl->nama }}</td>
+                	<td><a href="{{ url('/da/'.$asesmen->id) }}" class="stretched-link"></a>{{ $asesmen->sistemEl->nama }}</td>
                 	<td><small>{{ $asesmen->jadwal->toDayDateTimeString() }}</small></td>
                 	<td>{{ $asesmen->versi->kode }}</td>
                 	<td>
