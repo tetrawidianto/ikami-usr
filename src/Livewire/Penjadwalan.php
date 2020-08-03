@@ -87,9 +87,4 @@ class Penjadwalan extends Component
 	{
 
 	}
-
-	public function filterStatus($status)
-	{
-		$this->{$status} = !$this->{$status};
-	}
 }

@@ -5,17 +5,17 @@
 <div>
 	<form class="form-inline">
       <div class="custom-control custom-checkbox mx-1">
-        <input wire:click="filterStatus('terjadwal')" class="custom-control-input" type="checkbox" id="customCheckbox1" checked>
+        <input wire:model="terjadwal" class="custom-control-input" type="checkbox" id="customCheckbox1" checked>
         <label for="customCheckbox1" class="custom-control-label text-warning">terjadwal</label>
       </div>
 
       <div class="custom-control custom-checkbox mx-1">
-        <input wire:click="filterStatus('berlangsung')" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
+        <input wire:model="berlangsung" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
         <label for="customCheckbox2" class="custom-control-label text-info">berlangsung</label>
       </div>
       
       <div class="custom-control custom-checkbox mx-1">
-        <input wire:click="filterStatus('selesai')" class="custom-control-input" type="checkbox" id="customCheckbox3" checked>
+        <input wire:model="selesai" class="custom-control-input" type="checkbox" id="customCheckbox3" checked>
         <label for="customCheckbox3" class="custom-control-label text-success">selesai</label>
       </div>
   </form>

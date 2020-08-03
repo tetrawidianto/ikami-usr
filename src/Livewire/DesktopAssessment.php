@@ -56,9 +56,4 @@ class DesktopAssessment extends Component
 			'listAsesmen' => $listAsesmen
 		]);
 	}
-
-	public function filterStatus($status)
-	{
-		$this->{$status} = !$this->{$status};
-	}
 }

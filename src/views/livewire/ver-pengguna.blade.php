@@ -1,17 +1,17 @@
 <div>
 	<form class="form-inline">
       <div class="custom-control custom-checkbox mx-1">
-        <input wire:click="filterStatus('diterima')" class="custom-control-input" type="checkbox" id="customCheckbox1" checked>
+        <input wire:model="diterima" class="custom-control-input" type="checkbox" id="customCheckbox1" checked>
         <label for="customCheckbox1" class="custom-control-label text-success">diterima</label>
       </div>
 
       <div class="custom-control custom-checkbox mx-1">
-        <input wire:click="filterStatus('menunggu')" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
+        <input wire:model="menunggu" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
         <label for="customCheckbox2" class="custom-control-label text-warning">menunggu</label>
       </div>
       
       <div class="custom-control custom-checkbox mx-1">
-        <input wire:click="filterStatus('ditolak')" class="custom-control-input" type="checkbox" id="customCheckbox3" checked>
+        <input wire:model="ditolak" class="custom-control-input" type="checkbox" id="customCheckbox3" checked>
         <label for="customCheckbox3" class="custom-control-label text-danger">ditolak</label>
       </div>
   </form>
