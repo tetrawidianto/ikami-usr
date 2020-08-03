@@ -302,6 +302,13 @@ return [
             'label' => 'penjadwalan-da',
             'label_color' => 'danger'
         ],
+        [
+            'text' => 'Monitoring VA',
+            'url' => 'monitoring-va',
+            'icon' => 'fa fa-exclamation-triangle',
+            'active' => ['monitoring-va*'],
+            'can' => 'monitoring-va',
+        ],
         // asesor
         [
             'text' => 'Desktop Assessment',
