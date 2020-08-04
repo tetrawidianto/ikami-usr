@@ -24,6 +24,7 @@ class IkamiUsrServiceProvider extends ServiceProvider
             __DIR__.'/views/partials/navbar/navbar.blade.php' => resource_path('views/vendor/adminlte/partials/navbar/navbar.blade.php'),
             __DIR__.'/views/partials/sidebar/menu-item-link.blade.php' => resource_path('views/vendor/adminlte/partials/sidebar/menu-item-link.blade.php'),
             __DIR__.'/js/bootstrap.js' => resource_path('js/bootstrap.js'),
+            __DIR__.'/js/app.js' => resource_path('js/app.js'),
             __DIR__.'/sass/app.scss' => resource_path('sass/app.scss'),
             __DIR__.'/webpack.mix.js' => base_path('webpack.mix.js'),
             __DIR__.'/routes/web.php' => base_path('routes/web.php'),

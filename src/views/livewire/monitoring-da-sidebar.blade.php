@@ -30,7 +30,7 @@
 				</div>
 				<div class="form-group">
 					<label class="control-label">Waktu:</label>
-					<div class="form-control-static">{{ !$model ?: !$model->waktu ?: $model->jadwal->format('H:i') }}</div>
+					<div class="form-control-static">{{ !$model ?: !$model->jadwal ?: $model->jadwal->format('H:i') }}</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label">Tempat:</label>

@@ -21,16 +21,21 @@ class MonitoringDa extends Component
 	public $berlangsung = true;
 	public $selesai = true;
 	public $search;
+	public $user;
+	public $sektor;
 
 	protected $listeners = ['sidebarClosed', 'statusUpdated'];
+
+	public function mount()
+	{
+		$this->user = User::find(auth()->id());
+
+		$this->sektor = $this->user->sektor()->first();
+	}
 
 	public function render()
 	{
 		$searchTerm = '%'.$this->search.'%';
-
-		$user = User::find(auth()->id());
-
-		$sektor = $user->sektor()->first();
 
 		$status = [];
 		
@@ -52,8 +57,8 @@ class MonitoringDa extends Component
 		}
 
 		$listAsesmen = Asesmen::with('sistemEl', 'versi')
-			->whereHas('sistemEl', function($query) use ($sektor, $searchTerm) {
-				$query->where('sektor_id', $sektor->id)
+			->whereHas('sistemEl', function($query) use ($searchTerm) {
+				$query->where('sektor_id', $this->sektor->id)
 					->where('nama', 'like', $searchTerm);
 			})
 			->where(function($query) {

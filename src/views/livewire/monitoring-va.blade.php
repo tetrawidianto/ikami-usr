@@ -58,7 +58,7 @@
 		            <th>ID</th>
 		            <th>Nama Sistem El</th>
 		            {{-- <th>Versi</th> --}}
-		            <th>Status</th>
+		            <th>Status VA</th>
 		          </tr>
 		        </thead>
 		        <tbody>
@@ -75,7 +75,11 @@
 		        		<td>{{ $sistemEl->nama }}</td>
 		        		{{-- <td>{{ $asesmen->versi->kode }}</td> --}}
 		        		<td>
-		        			
+		        			@if($sistemEl->va()->count() > 0)
+								<span class="fas fa-check-circle text-success"></span>
+		        			@else
+								<span class="fas fa-times-circle text-danger"></span>
+		        			@endif
 		        		</td>
 		        	</tr>
 		        	@endforeach
