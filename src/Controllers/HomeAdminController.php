@@ -3,9 +3,11 @@
 namespace IkamiUsr\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use IkamiAdm\Models\SistemEl;
 use IkamiAdm\Models\Status;
 use IkamiAdm\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HomeAdminController extends Controller
 {
@@ -28,4 +30,8 @@ class HomeAdminController extends Controller
     	return view('ikami-usr::admin.home', compact('sektor', 'asesmen_semua', 'asesmen_masuk', 'asesmen_terjadwal', 'asesmen_berlangsung', 'asesmen_selesai'));
     }
 
+    public function dokumenVa(SistemEl $sistemEl)
+    {
+        return response()->file(Storage::path($sistemEl->va()->first()->dok_va));
+    }
 }

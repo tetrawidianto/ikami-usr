@@ -75,7 +75,7 @@
 		        		<td>{{ $sistemEl->nama }}</td>
 		        		{{-- <td>{{ $asesmen->versi->kode }}</td> --}}
 		        		<td>
-		        			@if($sistemEl->va()->count() > 0)
+		        			@if($sistemEl->va)
 								<span class="fas fa-check-circle text-success"></span>
 		        			@else
 								<span class="fas fa-times-circle text-danger"></span>
@@ -97,5 +97,5 @@
 </div>
 
 @section('right-sidebar')
-	{{-- @livewire('monitoring-da-sidebar') --}}
+	@livewire('monitoring-va-sidebar')
 @endsection

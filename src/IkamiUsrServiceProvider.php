@@ -48,8 +48,9 @@ class IkamiUsrServiceProvider extends ServiceProvider
         Livewire::component('ver-sidebar', \IkamiUsr\Livewire\VerSidebar::class);
         Livewire::component('menu-label', \IkamiUsr\Livewire\MenuLabel::class);
         Livewire::component('monitoring-da', \IkamiUsr\Livewire\MonitoringDa::class);
-        Livewire::component('monitoring-va', \IkamiUsr\Livewire\MonitoringVa::class);
         Livewire::component('monitoring-da-sidebar', \IkamiUsr\Livewire\MonitoringDaSidebar::class);
+        Livewire::component('monitoring-va', \IkamiUsr\Livewire\MonitoringVa::class);
+        Livewire::component('monitoring-va-sidebar', \IkamiUsr\Livewire\MonitoringVaSidebar::class);
         Livewire::component('desktop-assessment', \IkamiUsr\Livewire\DesktopAssessment::class);
         Livewire::component('rik-asesmen', \IkamiUsr\Livewire\RikAsesmen::class);
         Livewire::component('monitoring-sistem-el', \IkamiUsr\Livewire\MonitoringSistemEl::class);

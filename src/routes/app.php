@@ -20,7 +20,7 @@ Route::group(['middleware' => 'role:verifikator'], function() {
 
 Route::group(['middleware' => 'role:admin'], function() {
 	Route::get('/home-admin', 'HomeAdminController@index')->name('home-admin');
-	
+	Route::get('/va/{sistemEl}', 'HomeAdminController@dokumenVa')->name('dokumen-va');
 });
 
 Route::group(['middleware' => 'role:asesor'], function() {

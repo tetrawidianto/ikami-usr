@@ -17,6 +17,8 @@ class MonitoringVa extends Component
 	public $user;
 	public $sektor;
 
+	protected $listeners = ['sidebarClosed'];
+
 	public function mount()
 	{
 		$this->user = User::find(auth()->id());
@@ -37,5 +39,25 @@ class MonitoringVa extends Component
 		return view('ikami-usr::livewire.monitoring-va', [
 			'listSistemEl' => $listSistemEl
 		]);
+	}
+
+	public function openSidebar($itemId)
+	{
+		if($this->itemId == $itemId)
+		{
+			$this->isOpen = false;
+		}
+		else
+		{
+			$this->isOpen = true;
+			$this->itemId = $itemId;
+			$this->emitTo('monitoring-va-sidebar', 'loadData', $itemId);
+		}
+	}
+
+	public function sidebarClosed()
+	{
+		$this->isOpen = false;
+		$this->reset('itemId');
 	}
 }
