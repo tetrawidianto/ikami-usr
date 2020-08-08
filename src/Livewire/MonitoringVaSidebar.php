@@ -2,15 +2,10 @@
 
 namespace IkamiUsr\Livewire;
 
-// use App\User;
-// use Carbon\Carbon;
 use IkamiAdm\Models\SistemEl;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-// use IkamiAdm\Models\Asesmen;
-// use IkamiAdm\Models\Badge;
-// use IkamiAdm\Models\Status;
 
 class MonitoringVaSidebar extends Component
 {
@@ -23,39 +18,12 @@ class MonitoringVaSidebar extends Component
 	public $dokumen;
 	public $isVa = false;
 	public $isEdit = false;
-	// public $waktu;
-	// public $tempat;
-	// public $location;
-	// public $asesor;
-	// public $isEdit = false;
-	// public $isTerjadwal;
 
 	protected $listeners = ['loadData'];
 
 	public function render()
 	{
-		// $this->isTerjadwal = false;
-
-		// if($this->itemId)
-		// {
-		// 	$model = Asesmen::with('asesor')->find($this->itemId);
-
-		// 	if($model->latestStatus([Status::MASUK, Status::TERJADWAL])->name == Status::TERJADWAL)
-		// 	{
-		// 		$this->isTerjadwal = true;
-		// 	}
-		// }
-		// else
-		// {
-		// 	$model = NULL;
-		// }
-
-		// $listAsesor = User::role('asesor')->get(['id', 'name']);
-
-		return view('ikami-usr::livewire.monitoring-va-sidebar', [
-			// 'model' => $model,
-			// 'listAsesor' => $listAsesor
-		]);
+		return view('ikami-usr::livewire.monitoring-va-sidebar');
 	}
 
 	public function tambahVa()

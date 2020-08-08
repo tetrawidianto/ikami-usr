@@ -1,35 +1,15 @@
 <div>
-	{{-- <form class="form-inline">
-      <div class="form-group m-1">
-        <label class="control-label">Versi:</label>
-        <select wire:model="versi" class="form-control">
-          <option value="">Semua</option>
-          @foreach($listVersi as $versi)
-			<option value="{{ $versi->id }}">{{ $versi->kode }}</option>
-          @endforeach
-        </select>
+	<form class="form-inline">
+      <div class="custom-control custom-checkbox mx-1">
+        <input wire:model="sudah" class="custom-control-input" type="checkbox" id="customCheckbox1" checked>
+        <label for="customCheckbox1" class="custom-control-label text-success">sudah</label>
       </div>
 
       <div class="custom-control custom-checkbox mx-1">
-        <input wire:model="masuk" class="custom-control-input" type="checkbox" id="customCheckbox1" checked>
-        <label for="customCheckbox1" class="custom-control-label text-danger">masuk</label>
+        <input wire:model="belum" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
+        <label for="customCheckbox2" class="custom-control-label text-danger">belum</label>
       </div>
-
-      <div class="custom-control custom-checkbox mx-1">
-        <input wire:model="terjadwal" class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
-        <label for="customCheckbox2" class="custom-control-label text-warning">terjadwal</label>
-      </div>
-
-      <div class="custom-control custom-checkbox mx-1">
-        <input wire:model="berlangsung" class="custom-control-input" type="checkbox" id="customCheckbox3" checked>
-        <label for="customCheckbox3" class="custom-control-label text-info">berlangsung</label>
-      </div>
-      
-      <div class="custom-control custom-checkbox mx-1">
-        <input wire:model="selesai" class="custom-control-input" type="checkbox" id="customCheckbox4" checked>
-        <label for="customCheckbox4" class="custom-control-label text-success">selesai</label>
-      </div>
-  </form> --}}
+  </form>
 
 	<div class="card">
 		<div class="card-header">
@@ -57,7 +37,7 @@
 		            <th></th>
 		            <th>ID</th>
 		            <th>Nama Sistem El</th>
-		            {{-- <th>Versi</th> --}}
+		            <th>Penyedia</th>
 		            <th>Status VA</th>
 		          </tr>
 		        </thead>
@@ -73,7 +53,7 @@
 			            </a></td>
 		        		<td>{{ $sistemEl->id }}</td>
 		        		<td>{{ $sistemEl->nama }}</td>
-		        		{{-- <td>{{ $asesmen->versi->kode }}</td> --}}
+		        		<td>{{ $sistemEl->penyedia->nama }}</td>
 		        		<td>
 		        			@if($sistemEl->va)
 								<span class="fas fa-check-circle text-success"></span>

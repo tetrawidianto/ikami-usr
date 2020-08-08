@@ -16,6 +16,8 @@ class MonitoringVa extends Component
 	public $search;
 	public $user;
 	public $sektor;
+	public $sudah =true;
+	public $belum = true;
 
 	protected $listeners = ['sidebarClosed'];
 
@@ -30,9 +32,23 @@ class MonitoringVa extends Component
 	{
 		$searchTerm = '%'.$this->search.'%';
 
-		$listSistemEl = SistemEl::currentStatus('diterima')
+		$listSistemEl = SistemEl::with('penyedia')->currentStatus('diterima')
 			->where('sektor_id', $this->sektor->id)
 			->where('nama', 'like', $searchTerm)
+			->where(function($query) {
+				if($this->sudah && !$this->belum)
+				{
+					$query->has('va');
+				}
+				if(!$this->sudah && $this->belum)
+				{
+					$query->doesntHave('va');
+				}
+				if(!$this->sudah && !$this->belum)
+				{
+					$query->has('va')->doesntHave('va');
+				}
+			})
 			->latest()
 			->paginate(10);
 
