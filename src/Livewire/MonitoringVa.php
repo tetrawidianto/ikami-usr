@@ -34,7 +34,12 @@ class MonitoringVa extends Component
 
 		$listSistemEl = SistemEl::with('penyedia')->currentStatus('diterima')
 			->where('sektor_id', $this->sektor->id)
-			->where('nama', 'like', $searchTerm)
+			->where(function($query) use ($searchTerm) {
+				$query->where('nama', 'like', $searchTerm)
+					->orWhereHas('penyedia', function($query) use ($searchTerm) {
+						$query->where('nama', 'like', $searchTerm);
+					});
+			})
 			->where(function($query) {
 				if($this->sudah && !$this->belum)
 				{

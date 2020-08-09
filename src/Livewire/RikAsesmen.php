@@ -21,6 +21,7 @@ class RikAsesmen extends Component
 	public $navLink = 1;
 	public $jawabanId;
 	public $catatanId;
+	public $cekLapanganId = false;
 	public $message = [
 			'required' => ':attribute harus dipilih.',
 		];
@@ -31,10 +32,12 @@ class RikAsesmen extends Component
 	public $isRecheck = false;
 	public $jawaban = [];
 	public $catatan = [];
+	public $cekLapangan = [];
 	public $search;
 	public $dokumen;
 	public $kodeAkses;
 	public $beritaAcara;
+	public $isCekLapangan = false;
 
 	public function mount($asesmen)
 	{
@@ -62,7 +65,8 @@ class RikAsesmen extends Component
 			}])->find($this->navLink);
 		}
 
-		$uAsesmen = Asesmen::with('kategoriSistemEl', 'areaUtama.kematanganBaru', 'areaUtama.area', 'aspekSuplemen.aspek', 'opini', 'dokumenDa')->find($this->asesmen->id);
+		$uAsesmen = Asesmen::with('kategoriSistemEl', 'areaUtama.kematanganBaru', 'areaUtama.area', 'aspekSuplemen.aspek', 'opini', 'dokumenDa')
+			->find($this->asesmen->id);
 
 		if($uAsesmen->terjawabSemua())
 		{
@@ -85,7 +89,8 @@ class RikAsesmen extends Component
 			}])->get(),
 			'navTarget' => $navTarget,
 			'uAsesmen' => $uAsesmen,
-			'statistik' => json_encode($statistik)
+			'statistik' => json_encode($statistik),
+			'daftarKonfirmasi' => $uAsesmen->getPertanyaan()->with('pilihan.jawaban')->whereHas('informasi', function($query) { $query->where('confirm', true); })->get()
 		]);
 	}
 
@@ -93,14 +98,14 @@ class RikAsesmen extends Component
 	{
 		$this->navLink = $navLink;
 		$this->isRecheck = false;
-		$this->reset('search');
+		$this->reset('search', 'isCekLapangan');
 	}
 
 	public function loadAspek($navLink)
 	{
 		$this->navLink = $navLink + 6;
 		$this->isRecheck = false;
-		$this->reset('search');
+		$this->reset('search', 'isCekLapangan');
 	}
 
 	public function periksaKembali()
@@ -124,29 +129,35 @@ class RikAsesmen extends Component
 
 		$informasi->update([
 			'jawaban_2' => $this->jawabanId,
-			'catatan' => $this->catatanId
+			'catatan' => $this->catatanId,
+			'confirm' => $this->cekLapanganId
 		]);
 
-        $this->reset('jawabanId', 'catatanId');
+        $this->reset('jawabanId', 'catatanId', 'cekLapanganId');
 	}
 
 	public function updateJawaban($informasiId, $pertanyaanId)
 	{
+		$informasi = Informasi::find($informasiId);
+
 		if(array_key_exists($pertanyaanId, $this->jawaban))
 		{
-			$informasi = Informasi::find($informasiId)->update([
-				'jawaban_2' => $this->jawaban[$pertanyaanId],
-				'catatan' => $this->catatan[$pertanyaanId],
-			]);
-		}
-		else
-		{
-			$informasi = Informasi::find($informasiId)->update([
-				'catatan' => $this->catatan[$pertanyaanId],
-			]);
+			$informasi->jawaban_2 = $this->jawaban[$pertanyaanId];
 		}
 
-		$this->reset('jawaban', 'catatan');
+		if(array_key_exists($pertanyaanId, $this->catatan))
+		{
+			$informasi->catatan = $this->catatan[$pertanyaanId];
+		}
+
+		if(array_key_exists($pertanyaanId, $this->cekLapangan))
+		{
+			$informasi->confirm = $this->cekLapangan[$pertanyaanId];
+		}
+
+		$informasi->save();
+
+		// $this->reset('jawaban', 'catatan', 'cekLapangan');
 	}
 
 	public function tutupAsesmen()
@@ -232,5 +243,33 @@ class RikAsesmen extends Component
 		$this->emitTo('menu-label', 'statusUpdated');
 
 		$this->reset('kodeAkses');
+	}
+
+	public function loadCekLapangan()
+	{
+		$this->isCekLapangan = true;
+		$this->isRecheck = true;
+	}
+
+	public function confirmJawaban($informasiId)
+	{
+		$this->validate([
+			'jawabanId' => 'required'
+		], $this->message, $this->attribute);
+
+		$informasi = Informasi::find($informasiId);
+
+		$informasi->jawaban_2 = $this->jawabanId;
+
+		if($this->catatanId)
+		{
+			$informasi->catatan = $this->catatanId;
+		}
+
+		$informasi->confirmed = true;
+
+		$informasi->save();
+
+        $this->reset('jawabanId', 'catatanId');
 	}
 }

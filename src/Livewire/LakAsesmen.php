@@ -27,6 +27,7 @@ class LakAsesmen extends Component
 	public $jawaban = [];
 	public $search;
 	public $dokumen;
+	public $isCekLapangan = false;
 
 	public function mount($asesmen)
 	{
@@ -75,7 +76,8 @@ class LakAsesmen extends Component
 			}])->get(),
 			'navTarget' => $navTarget,
 			'uAsesmen' => $uAsesmen,
-			'statistik' => json_encode($statistik)
+			'statistik' => json_encode($statistik),
+			'daftarKonfirmasi' => $uAsesmen->getPertanyaan()->with('pilihan.jawaban')->whereHas('informasi', function($query) { $query->where('confirm', true); })->get()
 		]);
 	}
 
@@ -83,14 +85,14 @@ class LakAsesmen extends Component
 	{
 		$this->navLink = $navLink;
 		$this->isRecheck = false;
-		$this->reset('search');
+		$this->reset('search', 'isCekLapangan');
 	}
 
 	public function loadAspek($navLink)
 	{
 		$this->navLink = $navLink + 6;
 		$this->isRecheck = false;
-		$this->reset('search');
+		$this->reset('search', 'isCekLapangan');
 	}
 
 	public function periksaKembali()
@@ -168,5 +170,11 @@ class LakAsesmen extends Component
 	public function hapusDokumen($dokumenId)
 	{
 		DokumenDa::find($dokumenId)->delete();
+	}
+
+	public function loadCekLapangan()
+	{
+		$this->isCekLapangan = true;
+		$this->isRecheck = true;
 	}
 }

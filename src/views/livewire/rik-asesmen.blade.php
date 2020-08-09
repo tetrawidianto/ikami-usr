@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-md-3">
-	  <a wire:click="loadArea(1)" href="javascript:void(0)" class="btn btn-{{ $navLink == 1 ? 'warning' : 'outline-primary' }} btn-block mb-3">Kategori Sistem El
+	  <a wire:click="loadArea(1)" href="javascript:void(0)" class="btn btn-{{ $navLink == 1 && !$isCekLapangan ? 'warning' : 'outline-primary' }} btn-block mb-3">Kategori Sistem El
 		<span class="badge bg-{{ $daftarArea->first()->informasi_count == $daftarArea->first()->pertanyaan_count ? 'success' : 'secondary'}} float-right">{{ $daftarArea->first()->informasi_count }}/{{ $daftarArea->first()->pertanyaan_count }}</span>
 	  </a>
 	  <div class="card">
@@ -17,7 +17,7 @@
 			@foreach($daftarArea as $area)
 				@if($area->id !== 1 && $area->id !== 7)
 					<li class="nav-item">
-		              <a wire:click="loadArea('{{ $area->id }}')" href="javascript:void(0)" class="nav-link @if($navLink == $area->id) active @endif">
+		              <a wire:click="loadArea('{{ $area->id }}')" href="javascript:void(0)" class="nav-link @if($navLink == $area->id && !$isCekLapangan) active @endif">
 		                <i class="far fa-circle text-{{ $area->badge }}"></i> {{ $area->nama }}
 		                <span class="badge bg-{{ $area->informasi_count == $area->pertanyaan_count ? 'success' : 'secondary'}} float-right">{{ $area->informasi_count }}/{{ $area->pertanyaan_count }}</span>
 		              </a>
@@ -45,7 +45,7 @@
             @endphp
             @foreach($daftarAspek as $aspek)
 			<li class="nav-item">
-              <a wire:click="loadAspek('{{ $aspek->id }}')" href="javascript:void(0)" class="nav-link @if($navLink == $aspek->id + 6) active @endif">
+              <a wire:click="loadAspek('{{ $aspek->id }}')" href="javascript:void(0)" class="nav-link @if($navLink == $aspek->id + 6 && !$isCekLapangan) active @endif">
                 <i class="far fa-circle text-{{ $aspek->badge }}"></i>
                 {{ $aspek->nama }}
                 <span class="badge bg-{{ $aspek->informasi_count == $aspek->pertanyaan_count ? 'success' : 'secondary'}} float-right">{{ $aspek->informasi_count }}/{{ $aspek->pertanyaan_count }}</span>
@@ -56,6 +56,22 @@
         </div>
         <!-- /.card-body -->
       </div>
+
+      @if($uAsesmen->terevaluasiSemua() && !$daftarKonfirmasi->isEmpty())
+      <div class="card">
+      	<div class="card-body p-0">
+      		<ul class="nav nav-pills flex-column">
+      			<li class="nav-item">
+	              <a wire:click="loadCekLapangan" href="javascript:void(0)" class="nav-link @if($isCekLapangan) active @endif">
+	                <i class="far fa-circle text-lime"></i>
+	                Onsite Assessment
+	                <span class="badge bg-{{ $daftarKonfirmasi->where('informasi.confirmed', true)->count() == $daftarKonfirmasi->count() ? 'success' : 'secondary'}} float-right">{{ $daftarKonfirmasi->where('informasi.confirmed', true)->count() }}/{{ $daftarKonfirmasi->count() }}</span>
+	              </a>
+	            </li>
+      		</ul>
+      	</div>
+      </div>
+      @endif
 
       <div class="card">
   		<div class="card-header">
@@ -154,7 +170,24 @@
         </div>
 
 		@if($uAsesmen->terevaluasiSemua())
-			@if(!$uAsesmen->selesai)
+			@if(true)
+				<div class="alert alert-info alert-dismissible">
+		          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		          <h5><i class="icon fas fa-info"></i> Onsite Assessment</h5>
+		          <small>Terdapat </small>
+		          <span class="badge bg-warning">{{ $daftarKonfirmasi->count() }}</span> 
+		          <small>
+					pertanyaan yang memerlukan pengecekan secara langsung di lapangan. <a wire:click="loadCekLapangan" href="javascript:void(0)">Lihat</a>
+
+		          </small>
+		          <div wire:loading wire:target="loadCekLapangan">
+			        <div class="spinner-border spinner-border-sm text-warning" role="status">
+					  <span class="sr-only">Loading...</span>
+					</div>
+					
+		          </div>
+		        </div>
+			@elseif(!$uAsesmen->selesai)
 				<div class="alert alert-info alert-dismissible">
 		          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		          <h5><i class="icon fas fa-info"></i> Penutupan</h5>
@@ -307,6 +340,12 @@
 		              <div class="form-group">
 		              	<input wire:model="catatanId" type="text" class="form-control w-auto" placeholder="Catatan:">
 		              </div>
+		              <div class="form-group">
+		              	<div class="custom-control custom-checkbox">
+                          <input wire:model="cekLapanganId" class="custom-control-input" type="checkbox" id="customCheckbox1">
+                          <label for="customCheckbox1" class="custom-control-label">Cek Lapangan</label>
+                        </div>
+		              </div>
 		              <button wire:loading.attr="disabled" wire:target="jawabPertanyaan" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
 	              </form>
 	        	</div>
@@ -319,7 +358,7 @@
 				<div class="alert alert-success alert-dismissible">
 		          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
 		          <h5><i class="icon fas fa-check"></i> Selamat!</h5>
-		          <small>Anda telah menyelesaikan pemeriksaan asesmen mandiri <b>Indeks KAMI</b>. <a wire:click="periksaKembali" href="javascript:void(0)">Periksa kembali</a> area: <b>{{ $navTarget->nama }}</b>.</small>
+		          <small>Anda telah menyelesaikan Desktop Assessment <b>Indeks KAMI</b>. <a wire:click="periksaKembali" href="javascript:void(0)">Periksa kembali</a> area: <b>{{ $navTarget->nama }}</b>.</small>
 		        </div>
 	        @else
 				<div class="alert alert-info alert-dismissible">
@@ -330,6 +369,56 @@
 	        @endif
 	        
           @endif
+		
+		@elseif($isCekLapangan)
+		  @php
+			$onsiteIndex = $daftarKonfirmasi->where('informasi.confirmed', true)->count();
+		  @endphp
+
+		  <h4>Onsite Assessment @if($onsiteIndex < $daftarKonfirmasi->count()) #{{ $onsiteIndex + 1 }} @endif</h4>
+
+		  @if($daftarKonfirmasi->count() == $daftarKonfirmasi->where('informasi.confirmed', true)->count())
+				
+		  @else
+			<div class="card card-info">
+				<div class="card-header">
+					<div class="card-title">
+						{{ $daftarKonfirmasi[$onsiteIndex]->teks }}
+					</div>
+				</div>
+				<div class="card-body ">
+				  <form wire:submit.prevent="confirmJawaban('{{ $daftarKonfirmasi[$onsiteIndex]->informasi->id }}')">
+		        	  <div class="form-group">
+		                @foreach($daftarKonfirmasi[$onsiteIndex]->pilihan->jawaban as $jawaban)
+		                <div class="custom-control custom-radio">
+		                  <input 
+		                  wire:model="jawabanId" 
+		                  class="custom-control-input" 
+		                  type="radio" 
+		                  id="customRadio{{ $jawaban->id }}" 
+		                  name="customRadio" 
+		                  value="{{ $jawaban->id }}">
+		                  <label for="customRadio{{ $jawaban->id }}" class="custom-control-label">
+		                  	@if($jawaban->id == $daftarKonfirmasi[$onsiteIndex]->informasi->jawaban_2)
+		                  	<i>{{ $jawaban->teks }}</i>
+		                  	@else
+		                  	{{ $jawaban->teks }}
+		                  	@endif
+		                  </label>
+		                </div>
+		                @endforeach
+		                @error('jawabanId') <span class="invalid-feedback d-block">{{ $message }}</span> @enderror
+		              </div>
+		              <div class="form-group">
+		              	<span class="help-block">Catatan: <i>{{ $daftarKonfirmasi[$onsiteIndex]->informasi->catatan }}</i></span>
+		              	<input wire:model="catatanId" type="text" class="form-control w-auto" placeholder="Catatan:">
+		              </div>
+		              <button wire:loading.attr="disabled" wire:target="confirmJawaban" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
+	              </form>
+				</div>
+			</div>
+		  @endif
+
 		@else
 
 		  <h4>{{ $navTarget->nama }} </h4> 
@@ -357,7 +446,7 @@
 		  	$informasi = $navTarget->informasi[$key];
 		  @endphp
 
-		  <div class="card card-info">
+		  <div class="card @if($informasi->confirm) card-warning @else card-info @endif">
         	<div class="card-header">
         		<div class="card-title">
         			#{{ $key + 1 }} {{ $pertanyaan->teks }}
@@ -409,6 +498,12 @@
 	              	<input wire:model="catatan.{{ $pertanyaan->id }}" type="text" class="form-control w-auto" placeholder="Catatan:" value="{{ $informasi->catatan }}"
 	              	>
 	              </div>
+	              <div class="form-group">
+	              	<div class="custom-control custom-checkbox">
+                      <input wire:model="cekLapangan.{{ $pertanyaan->id }}" class="custom-control-input" type="checkbox" id="customCheckbox{{ $pertanyaan->id }}" @if($informasi->confirm) checked @endif>
+                      <label for="customCheckbox{{ $pertanyaan->id }}" class="custom-control-label">Cek Lapangan</label>
+                    </div>
+	              </div>
 	              
 	              	<button wire:loading.attr="disabled" wire:target="updateJawaban" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
 	              @else
@@ -425,7 +520,7 @@
         </div>
 
 		
-        <div class="card" @if(!$uAsesmen->terevaluasiSemua()) style="display: none;" @endif>
+        <div class="card" @if(!$uAsesmen->terevaluasiSemua() || $isCekLapangan) style="display: none;" @endif>
 			<div class="card-header">
 				<div class="card-title">
 					Statistik
@@ -436,7 +531,7 @@
 			</div>
 		</div>
 
-		@if($uAsesmen->terevaluasiSemua())
+		@if($uAsesmen->terevaluasiSemua() && !$isCekLapangan)
 		<div class="row">
 			<div class="col">
 				<div class="info-box mb-3 bg-info">

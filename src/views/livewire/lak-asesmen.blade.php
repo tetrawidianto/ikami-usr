@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-md-3">
-	  <a wire:click="loadArea(1)" href="javascript:void(0)" class="btn btn-{{ $navLink == 1 ? 'warning' : 'outline-primary' }} btn-block mb-3">Kategori Sistem El
+	  <a wire:click="loadArea(1)" href="javascript:void(0)" class="btn btn-{{ $navLink == 1 && !$isCekLapangan ? 'warning' : 'outline-primary' }} btn-block mb-3">Kategori Sistem El
 		<span class="badge bg-{{ $daftarArea->first()->informasi_count == $daftarArea->first()->pertanyaan_count ? 'success' : 'secondary'}} float-right">{{ $daftarArea->first()->informasi_count }}/{{ $daftarArea->first()->pertanyaan_count }}</span>
 	  </a>
 	  <div class="card">
@@ -17,7 +17,7 @@
 			@foreach($daftarArea as $area)
 				@if($area->id !== 1 && $area->id !== 7)
 					<li class="nav-item">
-		              <a wire:click="loadArea('{{ $area->id }}')" href="javascript:void(0)" class="nav-link @if($navLink == $area->id) active @endif">
+		              <a wire:click="loadArea('{{ $area->id }}')" href="javascript:void(0)" class="nav-link @if($navLink == $area->id && !$isCekLapangan) active @endif">
 		                <i class="far fa-circle text-{{ $area->badge }}"></i> {{ $area->nama }}
 		                <span class="badge bg-{{ $area->informasi_count == $area->pertanyaan_count ? 'success' : 'secondary'}} float-right">{{ $area->informasi_count }}/{{ $area->pertanyaan_count }}</span>
 		              </a>
@@ -45,7 +45,7 @@
             @endphp
             @foreach($daftarAspek as $aspek)
 			<li class="nav-item">
-              <a wire:click="loadAspek('{{ $aspek->id }}')" href="javascript:void(0)" class="nav-link @if($navLink == $aspek->id + 6) active @endif">
+              <a wire:click="loadAspek('{{ $aspek->id }}')" href="javascript:void(0)" class="nav-link @if($navLink == $aspek->id + 6 && !$isCekLapangan) active @endif">
                 <i class="far fa-circle text-{{ $aspek->badge }}"></i>
                 {{ $aspek->nama }}
                 <span class="badge bg-{{ $aspek->informasi_count == $aspek->pertanyaan_count ? 'success' : 'secondary'}} float-right">{{ $aspek->informasi_count }}/{{ $aspek->pertanyaan_count }}</span>
@@ -55,6 +55,20 @@
           </ul>
         </div>
         <!-- /.card-body -->
+      </div>
+
+      <div class="card">
+      	<div class="card-body p-0">
+      		<ul class="nav nav-pills flex-column">
+      			<li class="nav-item">
+	              <a wire:click="loadCekLapangan" href="javascript:void(0)" class="nav-link @if($isCekLapangan) active @endif">
+	                <i class="far fa-circle text-lime"></i>
+	                Onsite Assessment
+	                <span class="badge bg-{{ $daftarKonfirmasi->where('informasi.confirmed', true)->count() == $daftarKonfirmasi->count() ? 'success' : 'secondary'}} float-right">{{ $daftarKonfirmasi->where('informasi.confirmed', true)->count() }}/{{ $daftarKonfirmasi->count() }}</span>
+	              </a>
+	            </li>
+      		</ul>
+      	</div>
       </div>
 
 	  <div class="card">
@@ -178,7 +192,7 @@
 		          </small>
 		        </div>
 				
-				@elseif(!is_null($uAsesmen->jadwal) && !$uAsesmen->selesai)
+				@elseif(!is_null($uAsesmen->jadwal) && !$uAsesmen->terevaluasiSemua())
 		        <div class="info-box bg-{{ $uAsesmen->jadwal->lte(Carbon\Carbon::now()) && $uAsesmen->terkunci ? 'danger' : $asesmen->status()->badge }}">
 	              <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
 	              <div class="info-box-content">
@@ -225,8 +239,27 @@
 	              <span class="info-box-icon"><i class="far fa-clock"></i></span>
 	              <!-- /.info-box-content -->
 	            </div>
-				
+
+				@elseif(!is_null($uAsesmen->jadwal) && $uAsesmen->terevaluasiSemua() && $daftarKonfirmasi->where('confirmed', true)->count() < $daftarKonfirmasi->count())
+
+				<div class="alert alert-info alert-dismissible">
+		          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		          <h5><i class="icon fas fa-info"></i> Onsite Assessment</h5>
+		          <small>Terdapat </small>
+		          <span class="badge bg-warning">{{ $daftarKonfirmasi->count() }}</span> 
+		          <small>
+					pertanyaan yang memerlukan pengecekan secara langsung di lapangan. <a wire:click="loadCekLapangan" href="javascript:void(0)">Lihat</a>
+		          </small>
+		          <div wire:loading wire:target="loadCekLapangan">
+			        <div class="spinner-border spinner-border-sm text-warning" role="status">
+					  <span class="sr-only">Loading...</span>
+					</div>
+					
+		          </div>
+		        </div>
+
 				@else
+
 				<div class="alert alert-primary alert-dismissible">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                   <h5><i class="icon fas fa-certificate"></i> Tersertifikasi!</h5>
@@ -301,6 +334,50 @@
 	        @endif
 	        
           @endif
+
+		@elseif($isCekLapangan)
+		  <h4>Daftar Onsite Assessment</h4> 
+			
+		  @foreach($daftarKonfirmasi as $index => $konfirmasi)
+			<div class="card card-{{ $konfirmasi->informasi->confirmed ? 'success' : 'warning' }}">
+				<div class="card-header">
+					<div class="card-title">
+						#{{ $index + 1 }} {{ $konfirmasi->teks }}
+					</div>
+				</div>
+				<div class="card-body">
+				  <div class="form-group">
+	                @foreach($konfirmasi->pilihan->jawaban as $jawaban)
+	                <div class="custom-control custom-radio">
+	                  <input 
+	                  class="custom-control-input" 
+	                  type="radio" 
+	                  id="customRadio{{ $konfirmasi->id }}-{{ $jawaban->id }}" 
+	                  name="customRadio{{ $konfirmasi->id }}" 
+	                  value="{{ $jawaban->id }}"
+					  @if($jawaban->id == $konfirmasi->informasi->jawaban_1)
+						checked
+					  @endif
+					  disabled 
+	                  >
+	                  <label for="customRadio{{ $konfirmasi->id }}-{{ $jawaban->id }}" class="custom-control-label">
+	                  	@if($jawaban->id == $konfirmasi->informasi->jawaban_2)
+	                  	<i>{{ $jawaban->teks }}</i>
+	                  	@else
+	                  	{{ $jawaban->teks }}
+	                  	@endif
+	                  </label>
+	                </div>
+	                @endforeach
+	                
+	              </div>
+	              <div class="form-group">
+	              	<span class="help-block"><i>{{ $konfirmasi->informasi->catatan }}</i></span>
+	              </div>
+				</div>
+			</div>
+		  @endforeach
+
 		@else
 		  <h4>{{ $navTarget->nama }} </h4> 
 		  <div class="form-group">
@@ -327,7 +404,7 @@
 		  	$informasi = $navTarget->informasi[$key];
 		  @endphp
 
-		  <div class="card card-info">
+		  <div class="card @if($informasi->confirm) card-warning @else card-info @endif">
         	<div class="card-header">
         		<div class="card-title">
         			#{{ $key + 1 }} {{ $pertanyaan->teks }}
@@ -388,7 +465,7 @@
 		@endif
         </div>
 
-        <div class="card" @if(!$uAsesmen->terjawabSemua()) style="display: none;" @endif>
+        <div class="card" @if(!$uAsesmen->terjawabSemua() || $isCekLapangan) style="display: none;" @endif>
 			<div class="card-header">
 				<div class="card-title">
 					Statistik
@@ -399,7 +476,7 @@
 			</div>
 		</div>
 
-		@if($uAsesmen->terjawabSemua())
+		@if($uAsesmen->terjawabSemua() && !$isCekLapangan)
 		<div class="row">
 			<div class="col">
 				<div class="info-box mb-3 bg-info">
