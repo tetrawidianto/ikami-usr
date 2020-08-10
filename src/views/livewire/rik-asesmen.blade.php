@@ -1,211 +1,16 @@
 <div class="row">
 	<div class="col-md-3">
-	  <a wire:click="loadArea(1)" href="javascript:void(0)" class="btn btn-{{ $navLink == 1 && !$isCekLapangan ? 'warning' : 'outline-primary' }} btn-block mb-3">Kategori Sistem El
-		<span class="badge bg-{{ $daftarArea->first()->informasi_count == $daftarArea->first()->pertanyaan_count ? 'success' : 'secondary'}} float-right">{{ $daftarArea->first()->informasi_count }}/{{ $daftarArea->first()->pertanyaan_count }}</span>
-	  </a>
-	  <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Area Utama</h3>
+	  
+	  @include('ikami-usr::livewire.rik-nav')
 
-          <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <div class="card-body p-0">
-          <ul class="nav nav-pills flex-column">
-			@foreach($daftarArea as $area)
-				@if($area->id !== 1 && $area->id !== 7)
-					<li class="nav-item">
-		              <a wire:click="loadArea('{{ $area->id }}')" href="javascript:void(0)" class="nav-link @if($navLink == $area->id && !$isCekLapangan) active @endif">
-		                <i class="far fa-circle text-{{ $area->badge }}"></i> {{ $area->nama }}
-		                <span class="badge bg-{{ $area->informasi_count == $area->pertanyaan_count ? 'success' : 'secondary'}} float-right">{{ $area->informasi_count }}/{{ $area->pertanyaan_count }}</span>
-		              </a>
-		            </li>
-	            @endif
-			@endforeach
-          </ul>
-        </div>
-        <!-- /.card-body -->
-      </div>
-
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Suplemen</h3>
-
-          <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-            </button>
-          </div>
-        </div>
-        <div class="card-body p-0">
-          <ul class="nav nav-pills flex-column">
-            @php
-            	$daftarAspek = $daftarArea->where('id',7)->first()->aspek;
-            @endphp
-            @foreach($daftarAspek as $aspek)
-			<li class="nav-item">
-              <a wire:click="loadAspek('{{ $aspek->id }}')" href="javascript:void(0)" class="nav-link @if($navLink == $aspek->id + 6 && !$isCekLapangan) active @endif">
-                <i class="far fa-circle text-{{ $aspek->badge }}"></i>
-                {{ $aspek->nama }}
-                <span class="badge bg-{{ $aspek->informasi_count == $aspek->pertanyaan_count ? 'success' : 'secondary'}} float-right">{{ $aspek->informasi_count }}/{{ $aspek->pertanyaan_count }}</span>
-              </a>
-            </li>
-            @endforeach
-          </ul>
-        </div>
-        <!-- /.card-body -->
-      </div>
-
-      @if($uAsesmen->terevaluasiSemua() && !$daftarKonfirmasi->isEmpty())
-      <div class="card">
-      	<div class="card-body p-0">
-      		<ul class="nav nav-pills flex-column">
-      			<li class="nav-item">
-	              <a wire:click="loadCekLapangan" href="javascript:void(0)" class="nav-link @if($isCekLapangan) active @endif">
-	                <i class="far fa-circle text-lime"></i>
-	                Onsite Assessment
-	                <span class="badge bg-{{ $daftarKonfirmasi->where('informasi.confirmed', true)->count() == $daftarKonfirmasi->count() ? 'success' : 'secondary'}} float-right">{{ $daftarKonfirmasi->where('informasi.confirmed', true)->count() }}/{{ $daftarKonfirmasi->count() }}</span>
-	              </a>
-	            </li>
-      		</ul>
-      	</div>
-      </div>
-      @endif
-
-      <div class="card">
-  		<div class="card-header">
-  			<div class="card-title">
-  				Referensi
-  			</div>
-  			<div class="card-tools">
-            	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-            	</button>
-          	</div>
-  		</div>
-  		<div class="card-body p-1">
-
-  		  @if($uAsesmen->terkunci || $uAsesmen->selesai)
-  		  	<ul>
-				@foreach($uAsesmen->dokumenDa as $dokumen)
-				<li>{{ $dokumen->judul_dokumen }}</li>
-				@endforeach
-			</ul>
-  		  
-		  @else
-			  <ul class="list-group">
-			  	@foreach($uAsesmen->dokumenDa as $dokumen)
-			  	<li class="list-group-item d-flex justify-content-between align-items-center">
-					{{ $dokumen->judul_dokumen }}
-				<a wire:loading.remove wire:target="hapusDokumen" wire:click="hapusDokumen('{{ $dokumen->id }}')" href="javascript:void(0)" class="text-danger">
-					<span class="fas fa-times"></span>
-				</a>
-				<div wire:loading wire:target="hapusDokumen">
-			        <div class="spinner-border spinner-border-sm text-primary" role="status">
-					  <span class="sr-only">Loading...</span>
-					</div>
-					
-		        </div>
-			  	</li>
-			  	@endforeach
-			  </ul>
-		  @endif
-  		</div>
-  		
-  		@if(!($uAsesmen->terkunci || $uAsesmen->selesai))
-  		<div class="card-footer p-2">
-  		  <div class="form-group">
-  		  	<label class="control-label">Tambah dokumen:</label>
-		  	<div class="input-group">
-                <input wire:model="dokumen" type="text" class="form-control @error('dokumen') is-invalid @enderror" placeholder="Judul:">
-                
-                <div class="input-group-append">
-                  <button wire:click="tambahDokumen" wire:loading.attr="disabled" wire:target="tambahDokumen" type="button" class="btn btn-warning"><i class="fas fa-save"></i></button>
-                </div>
-            </div>
-            @error('dokumen') <span class="invalid-feedback d-block">{{ $message }}</span> @enderror
-		  </div>
-  		</div>
-  		@endif
-      </div>
+      @include('ikami-usr::livewire.rik-ref')
 
 	</div>
 
 	<div class="col-md-6">
-		<div class="row">
-          <div class="col-12 col-md-6">
-            <div class="info-box">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-server"></i></span>
+		@include('ikami-usr::livewire.rik-header')
 
-              <div class="info-box-content">
-                <span class="info-box-text">Sistem El
-					@if($uAsesmen->terkunci)
-					<i class="fas fa-lock text-danger float-right"></i>
-					@else
-					<i class="fas fa-unlock text-success float-right"></i>
-					@endif
-                </span>
-                <span class="info-box-number">
-                  {{ $asesmen->sistemEl->nama }} 
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-md-6">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-cog"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Versi</span>
-                <span class="info-box-number">{{ $asesmen->versi->kode }} <small class="text-secondary"><i>{{ $asesmen->jadwal->toDateString() }}</i></small></span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-        </div>
-
-		@if($uAsesmen->terevaluasiSemua())
-			@if(true)
-				<div class="alert alert-info alert-dismissible">
-		          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		          <h5><i class="icon fas fa-info"></i> Onsite Assessment</h5>
-		          <small>Terdapat </small>
-		          <span class="badge bg-warning">{{ $daftarKonfirmasi->count() }}</span> 
-		          <small>
-					pertanyaan yang memerlukan pengecekan secara langsung di lapangan. <a wire:click="loadCekLapangan" href="javascript:void(0)">Lihat</a>
-
-		          </small>
-		          <div wire:loading wire:target="loadCekLapangan">
-			        <div class="spinner-border spinner-border-sm text-warning" role="status">
-					  <span class="sr-only">Loading...</span>
-					</div>
-					
-		          </div>
-		        </div>
-			@elseif(!$uAsesmen->selesai)
-				<div class="alert alert-info alert-dismissible">
-		          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		          <h5><i class="icon fas fa-info"></i> Penutupan</h5>
-		          <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium voluptas at, rerum, quam nemo, odit autem repellat perspiciatis delectus doloremque est enim qui vitae libero blanditiis consequuntur, et impedit fuga. 
-		          	@if(!is_null($uAsesmen->berita_acara))
-					<a onclick="confirm('{{ __('Apakah Anda sudah yakin?') }}') || event.stopImmediatePropagation()" wire:click="tutupAsesmen" href="javascript:void(0)">Tutup</a>
-					@endif
-		          </small>
-		        </div>
-			@else
-				<div class="alert alert-primary alert-dismissible">
-		          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		          <h5><i class="icon fas fa-certificate"></i> Selesai!</h5>
-		          <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium voluptas at, rerum, quam nemo, odit autem repellat perspiciatis delectus doloremque est enim qui vitae libero blanditiis consequuntur, et impedit fuga. </small>
-		        </div>
-			@endif
-		@endif
-
+		@include('ikami-usr::livewire.rik-flyer-1')
 
 	    <div class="d-flex justify-content-center">
 	       	<div wire:loading wire:target="loadAspek,loadArea,periksaKembali,tutupPeriksaKembali">
@@ -375,10 +180,21 @@
 			$onsiteIndex = $daftarKonfirmasi->where('informasi.confirmed', true)->count();
 		  @endphp
 
-		  <h4>Onsite Assessment @if($onsiteIndex < $daftarKonfirmasi->count()) #{{ $onsiteIndex + 1 }} @endif</h4>
+		  <h4>@if($onsiteIndex == $daftarKonfirmasi->count()) Daftar Onsite @endif Assessment @if($onsiteIndex < $daftarKonfirmasi->count()) #{{ $onsiteIndex + 1 }} @endif</h4>
 
 		  @if($daftarKonfirmasi->count() == $daftarKonfirmasi->where('informasi.confirmed', true)->count())
-				
+				@foreach($daftarKonfirmasi as $index => $konfirmasi)
+					<div class="card card-info">
+						<div class="card-header">
+							<div class="card-title">
+								{{ $konfirmasi->teks }}
+							</div>
+						</div>
+						<div class="card-body">
+							
+						</div>
+					</div>
+				@endforeach
 		  @else
 			<div class="card card-info">
 				<div class="card-header">
@@ -446,7 +262,7 @@
 		  	$informasi = $navTarget->informasi[$key];
 		  @endphp
 
-		  <div class="card @if($informasi->confirm) card-warning @else card-info @endif">
+		  <div class="card @if($informasi->confirm) @if($informasi->confirmed) card-success @else card-warning @endif @else card-info @endif">
         	<div class="card-header">
         		<div class="card-title">
         			#{{ $key + 1 }} {{ $pertanyaan->teks }}
@@ -519,226 +335,16 @@
 		@endif
         </div>
 
+		@include('ikami-usr::livewire.statistik')
 		
-        <div class="card" @if(!$uAsesmen->terevaluasiSemua() || $isCekLapangan) style="display: none;" @endif>
-			<div class="card-header">
-				<div class="card-title">
-					Statistik
-				</div>
-			</div>
-			<div wire:ignore wire:key="first" class="card-body">
-				<canvas id="radarChart"></canvas>
-			</div>
-		</div>
-
-		@if($uAsesmen->terevaluasiSemua() && !$isCekLapangan)
-		<div class="row">
-			<div class="col">
-				<div class="info-box mb-3 bg-info">
-	              <span class="info-box-icon"><i class="fas fa-chart-line"></i></span>
-
-	              <div class="info-box-content">
-	                <span class="info-box-text">Skor Akhir</span> 
-	                <span class="info-box-number">{{ $uAsesmen->skor_utama }}</span>
-	              </div>
-	              <!-- /.info-box-content -->
-	            </div>
-			</div>
-			<div class="col">
-				<div class="info-box mb-3 bg-{{ $uAsesmen->opini->color }}">
-	              <span class="info-box-icon"><i class="fas fa-trophy"></i></span>
-
-	              <div class="info-box-content">
-	                <span class="info-box-text">Hasil Akhir</span> 
-	                <span class="info-box-number">{{ $uAsesmen->opini->nama }}</span>
-	              </div>
-	              <!-- /.info-box-content -->
-	            </div>
-			</div>
-		</div>
-
-		<div class="card card-primary">
-			<div class="card-header">
-				<div class="card-title">
-					Dokumen Terkait
-				</div>
-			</div>
-			
-			@if(!is_null($uAsesmen->berita_acara))
-			<div class="card-body">
-				<ul class="list-group">
-				  <li class="list-group-item d-flex justify-content-between align-items-center">
-						<a href="javascript:void(0)" onclick="window.open('{{ route('ba-asesor', $uAsesmen->id)  }}', 'ikami-preview', 'height=800,width=600')">Berita Acara</a>
-					@if(!$uAsesmen->selesai)
-					<a wire:loading.remove wire:target="hapusBeritaAcara" wire:click="hapusBeritaAcara" href="javascript:void(0)" class="text-danger">
-						<span class="fas fa-times"></span>
-					</a>
-					<div wire:loading wire:target="hapusBeritaAcara">
-				        <div class="spinner-border spinner-border-sm text-primary" role="status">
-						  <span class="sr-only">Loading...</span>
-						</div>
-			        </div>
-					@endif
-				  </li>
-			  </ul>
-			</div>
-			@endif
-
-			@if(is_null($uAsesmen->berita_acara))
-			<div class="card-footer">
-			  <h5>Form Upload</h5>
-			  <hr>
-			  <form wire:submit.prevent="uploadBeritaAcara">
-				<div class="form-group">
-					<label class="control-label">Berita Acara:</label>
-					<input wire:model="beritaAcara" type="file" class="form-control-file @error('beritaAcara') is-invalid @enderror">
-
-					@error('beritaAcara') <span class="invalid-feedback d-block">{{ $message }}</span> @enderror
-
-					<div wire:loading wire:target="beritaAcara">
-					    <div class="spinner-border spinner-border-sm text-primary" role="status">
-						  <span class="sr-only">Loading...</span>
-						</div>
-				    </div>
-				</div>
-				<button wire:loading.attr="disabled" wire:target="beritaAcara,uploadBeritaAcara" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
-			  </form>
-			</div>
-			@endif
-		</div>
-		@endif
+		@include('ikami-usr::livewire.rik-dok')
 
 	</div>
 
 	<div class="col-md-3">
-		<div class="info-box mb-3">
-          <span class="info-box-icon bg-{{ $uAsesmen->kategoriSistemEl->color }} elevation-1"><i class="fas fa-tachometer-alt"></i></span>
+		
+		@include('ikami-usr::livewire.kategorisasi')
 
-          <div class="info-box-content">
-            <span class="info-box-text">Kategori</span>
-            <span class="info-box-number text-{{ $uAsesmen->kategoriSistemEl->color }}">{{ $uAsesmen->kategoriSistemEl->nama }}</span>
-          </div>
-          <!-- /.info-box-content -->
-        </div>
-        <!-- /.info-box -->
-      	
-      	<div class="card">
-      		<div class="card-header">
-      			<div class="card-title">
-      				Skala Kategori
-      			</div>
-      		</div>
-      		<div class="card-body p-1">
-      			<div class="progress">
-				  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{ $uAsesmen->skor*2 }}%" aria-valuenow="{{ $uAsesmen->skor*2 }}" aria-valuemin="0" aria-valuemax="100">{{ $uAsesmen->skor }}</div>
-				</div>
-      			<div class="progress">
-				  <div class="progress-bar bg-success" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">Rendah</div>
-				  <div class="progress-bar bg-warning" role="progressbar" style="width: 38%" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100">Tinggi</div>
-				  <div class="progress-bar bg-danger" role="progressbar" style="width: 32%" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100">Strategis</div>
-				</div>
-      		</div>
-      	</div>
-
-      	<div class="card">
-      		<div class="card-header">
-      			<div class="card-title">
-      				Tingkat Kematangan
-      			</div>
-      		</div>
-      		<div class="card-body p-2">
-      			@foreach($uAsesmen->areaUtama as $key => $areaUtama)
-      			<div class="d-flex justify-content-between align-items-center @if($uAsesmen->areaUtama->count() - 1 != $key) border-bottom @endif mb-3">
-                  <p class="d-flex flex-column text-left">
-                    <span class="text-muted"><small>{{ $areaUtama->area->nama }}</small></span>
-                    <span class="font-weight-bold">
-                      {{ $areaUtama->skor }}
-                    </span>
-                  </p>
-                  <p class="text-dark text-lg">
-                    <span class="badge badge-pill badge-{{ $areaUtama->area->badge }}">{{ $areaUtama->kematanganBaru->nama }}</span>
-                  </p>
-                </div>
-                @endforeach
-      		</div>
-      	</div>
-
-      	<div class="card">
-      		<div class="card-header">
-      			<div class="card-title">
-      				Tingkat Pemenuhan
-      			</div>
-      		</div>
-      		<div class="card-body p-1">
-                @foreach($uAsesmen->aspekSuplemen as $aspekSuplemen)
-                <div class="progress-group">
-                  <small>{{ $aspekSuplemen->aspek->nama }}</small>
-                  <div class="progress progress-sm">
-                    <div class="progress-bar bg-{{ $aspekSuplemen->aspek->badge }}" style="width: {{ $aspekSuplemen->persentase }}%">{{ $aspekSuplemen->persentase }}%</div>
-                  </div>
-                </div>
-                @endforeach
-                <!-- /.progress-group -->
-      		</div>
-      	</div>
 	</div>
 </div>
 
-@push('js')
-	<script src="{{ asset('vendor/chart.js/Chart.js') }}"></script>
-	<script>
-		var statistik = JSON.parse('{{ $statistik }}')
-
-		var data = {
-            labels: ['Tata Kelola', 'Pengelolaan Risiko', 'Kerangka Kerja', 'Pengelolaan Aset', 'Teknologi'],
-            datasets: [
-                {
-                    label: "Asesmen",
-                    backgroundColor: "rgba(0, 0, 0, 0)",
-                    borderColor: "rgba(255,133,27, 0.8)",
-                    data: statistik
-                },
-                {
-                    label: "Kerangka Kerja Dasar",
-                    backgroundColor: "rgba(11,156,49,0.6)",
-                    data: [24, 30, 36, 72, 42]
-                },
-                {
-                    label: "Penerapan Operasional",
-                    backgroundColor: "rgba(11,156,49,0.4)",
-                    data: [72, 54, 96, 132, 102]
-                },
-                {
-                    label: "Kepatuhan ISO 27001",
-                    backgroundColor: "rgba(11,156,49,0.2)",
-                    data: [126, 72, 159, 168, 120]
-                },
-            ]
-        }
-
-        var options = {
-            scale: {
-                ticks: {
-                    display: false
-                }
-            },
-            legend: {
-              position: 'bottom'
-            }
-        }
-
-        var ctx = document.getElementById('radarChart').getContext('2d');
-
-        var chart = new Chart(ctx, {
-		    type: 'radar',
-		    data: data,
-		    options: options
-		})
-
-		window.livewire.on('updateRadarChart', (statistik) => {
-		    chart.data.datasets[0].data = JSON.parse(statistik)
-		    chart.update()
-		});
-
-	</script>
-@endpush
