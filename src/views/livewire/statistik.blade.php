@@ -1,4 +1,4 @@
-<div class="card" @if(!$uAsesmen->terevaluasiSemua() || $isCekLapangan) style="display: none;" @endif>
+<div class="card" @if($isRecheck || !$uAsesmen->terevaluasiSemua() || ( !$daftarKonfirmasi->isEmpty() && $daftarKonfirmasi->where('informasi.confirmed', true)->count() < $daftarKonfirmasi->count() )) style="display: none;" @endif>
 	<div class="card-header">
 		<div class="card-title">
 			Statistik
@@ -9,7 +9,7 @@
 	</div>
 </div>
 
-@if($uAsesmen->terevaluasiSemua() && !$isCekLapangan)
+@if(!$isRecheck && $uAsesmen->terevaluasiSemua() && ( (!$daftarKonfirmasi->isEmpty() && $daftarKonfirmasi->where('informasi.confirmed', true)->count() == $daftarKonfirmasi->count()) || $daftarKonfirmasi->isEmpty() ))
 <div class="row">
 	<div class="col">
 		<div class="info-box mb-3 bg-info">

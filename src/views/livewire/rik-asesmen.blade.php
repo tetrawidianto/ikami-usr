@@ -13,7 +13,7 @@
 		@include('ikami-usr::livewire.rik-flyer-1')
 
 	    <div class="d-flex justify-content-center">
-	       	<div wire:loading wire:target="loadAspek,loadArea,periksaKembali,tutupPeriksaKembali">
+	       	<div wire:loading wire:target="loadAspek,loadArea,periksaKembali,tutupPeriksaKembali,loadCekLapangan">
 	        	<div class="spinner-grow text-primary" role="status">
 			  		<span class="sr-only">Loading...</span>
 				</div>
@@ -25,10 +25,13 @@
 		@endphp
 		
 		<div wire:loading.remove wire:target="loadAspek,loadArea,periksaKembali,tutupPeriksaKembali">
+		
 		@if(!$isRecheck)
+		  
 		  @if($navIndex < $navTarget->pertanyaan->count())
 			
 			@if($uAsesmen->terkunci)
+				
 				<div class="info-box bg-{{ $uAsesmen->jadwal->lte(Carbon\Carbon::now()) ? 'danger' : 'warning' }}">
 	              <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
 	              <div class="info-box-content">
@@ -114,6 +117,7 @@
 				@if($navTarget->pertanyaan[$navIndex]->kematangan)
 				<small>Kematangan:</small> <span class="badge badge-danger">{{ $navTarget->pertanyaan[$navIndex]->kematangan->nama }}</span>
 				@endif
+				
 				@if($navTarget->pertanyaan[$navIndex]->kesiapan)
 				<small>Kesiapan:</small> <span class="badge badge-warning">{{ $navTarget->pertanyaan[$navIndex]->kesiapan->nama }}</span>
 				@endif
@@ -159,85 +163,19 @@
 	        @endif
         
           @else
-	        @if($uAsesmen->terevaluasiSemua())
-				<div class="alert alert-success alert-dismissible">
-		          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		          <h5><i class="icon fas fa-check"></i> Selamat!</h5>
-		          <small>Anda telah menyelesaikan Desktop Assessment <b>Indeks KAMI</b>. <a wire:click="periksaKembali" href="javascript:void(0)">Periksa kembali</a> area: <b>{{ $navTarget->nama }}</b>.</small>
-		        </div>
-	        @else
-				<div class="alert alert-info alert-dismissible">
-		          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-		          <h5><i class="icon fas fa-check"></i> Selesai!</h5>
-		          <small>Area: <b>{{ $navTarget->nama }}</b> telah selesai diperiksa. Anda dapat menuju area lain yang belum diperiksa. <a wire:click="periksaKembali" href="javascript:void(0)">Periksa kembali</a></small>
-		        </div>
-	        @endif
+	        
+	        @include('ikami-usr::livewire.rik-flyer-2')
 	        
           @endif
 		
 		@elseif($isCekLapangan)
-		  @php
-			$onsiteIndex = $daftarKonfirmasi->where('informasi.confirmed', true)->count();
-		  @endphp
-
-		  <h4>@if($onsiteIndex == $daftarKonfirmasi->count()) Daftar Onsite @endif Assessment @if($onsiteIndex < $daftarKonfirmasi->count()) #{{ $onsiteIndex + 1 }} @endif</h4>
-
-		  @if($daftarKonfirmasi->count() == $daftarKonfirmasi->where('informasi.confirmed', true)->count())
-				@foreach($daftarKonfirmasi as $index => $konfirmasi)
-					<div class="card card-info">
-						<div class="card-header">
-							<div class="card-title">
-								{{ $konfirmasi->teks }}
-							</div>
-						</div>
-						<div class="card-body">
-							
-						</div>
-					</div>
-				@endforeach
-		  @else
-			<div class="card card-info">
-				<div class="card-header">
-					<div class="card-title">
-						{{ $daftarKonfirmasi[$onsiteIndex]->teks }}
-					</div>
-				</div>
-				<div class="card-body ">
-				  <form wire:submit.prevent="confirmJawaban('{{ $daftarKonfirmasi[$onsiteIndex]->informasi->id }}')">
-		        	  <div class="form-group">
-		                @foreach($daftarKonfirmasi[$onsiteIndex]->pilihan->jawaban as $jawaban)
-		                <div class="custom-control custom-radio">
-		                  <input 
-		                  wire:model="jawabanId" 
-		                  class="custom-control-input" 
-		                  type="radio" 
-		                  id="customRadio{{ $jawaban->id }}" 
-		                  name="customRadio" 
-		                  value="{{ $jawaban->id }}">
-		                  <label for="customRadio{{ $jawaban->id }}" class="custom-control-label">
-		                  	@if($jawaban->id == $daftarKonfirmasi[$onsiteIndex]->informasi->jawaban_2)
-		                  	<i>{{ $jawaban->teks }}</i>
-		                  	@else
-		                  	{{ $jawaban->teks }}
-		                  	@endif
-		                  </label>
-		                </div>
-		                @endforeach
-		                @error('jawabanId') <span class="invalid-feedback d-block">{{ $message }}</span> @enderror
-		              </div>
-		              <div class="form-group">
-		              	<span class="help-block">Catatan: <i>{{ $daftarKonfirmasi[$onsiteIndex]->informasi->catatan }}</i></span>
-		              	<input wire:model="catatanId" type="text" class="form-control w-auto" placeholder="Catatan:">
-		              </div>
-		              <button wire:loading.attr="disabled" wire:target="confirmJawaban" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
-	              </form>
-				</div>
-			</div>
-		  @endif
+		  
+		  @include('ikami-usr::livewire.rik-oa')
 
 		@else
 
 		  <h4>{{ $navTarget->nama }} </h4> 
+		  
 		  <div class="form-group">
 		  	<div class="input-group input-group-sm">
               <input wire:model="search" type="text" class="form-control" placeholder="Cari...">

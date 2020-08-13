@@ -7,7 +7,7 @@
       <small>Terdapat </small>
       <span class="badge bg-warning">{{ $daftarKonfirmasi->count() - $daftarKonfirmasi->where('informasi.confirmed', true)->count() }}/{{ $daftarKonfirmasi->count() }}</span> 
       <small>
-		   pertanyaan yang memerlukan pengecekan secara langsung di lapangan. <a wire:click="loadCekLapangan" href="javascript:void(0)">Lihat</a>
+		   pertanyaan yang memerlukan pengecekan secara langsung di lapangan. <a wire:click="loadCekLapangan" href="javascript:void(0)">Periksa</a>
       </small>
         
       <div wire:loading wire:target="loadCekLapangan">
@@ -37,9 +37,9 @@
 		<div class="alert alert-primary alert-dismissible">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
       <h5><i class="icon fas fa-certificate"></i> Selesai!</h5>
-          <small>
-            Asesmen ini telah selesai diperiksa. Terima kasih.
-          </small>
-        </div>
+      <small>
+        Terima kasih atas partisipasi Anda.
+      </small>
+    </div>
 	@endif
 @endif

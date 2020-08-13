@@ -1,4 +1,4 @@
-@if($uAsesmen->selesai)
+@if($uAsesmen->selesai && !$isRecheck)
 <div class="card card-primary">
 	<div class="card-header">
 		<div class="card-title">

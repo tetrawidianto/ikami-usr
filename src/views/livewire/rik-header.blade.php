@@ -5,11 +5,11 @@
 
       <div class="info-box-content">
         <span class="info-box-text">Sistem El
-	@if($uAsesmen->terkunci)
-	<i class="fas fa-lock text-danger float-right"></i>
-	@else
-	<i class="fas fa-unlock text-success float-right"></i>
-	@endif
+        	@if($uAsesmen->terkunci)
+        	<i class="fas fa-lock text-danger float-right"></i>
+        	@else
+        	<i class="fas fa-unlock text-success float-right"></i>
+        	@endif
         </span>
         <span class="info-box-number">
           {{ $asesmen->sistemEl->nama }} 

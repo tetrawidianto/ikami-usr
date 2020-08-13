@@ -1,4 +1,4 @@
-@if($uAsesmen->terevaluasiSemua() && !$isCekLapangan)
+@if($uAsesmen->terevaluasiSemua() && ( (!$daftarKonfirmasi->isEmpty() && $daftarKonfirmasi->where('informasi.confirmed', true)->count() == $daftarKonfirmasi->count()) || $daftarKonfirmasi->isEmpty() ))
 <div class="card card-primary">
 	<div class="card-header">
 		<div class="card-title">
@@ -7,6 +7,7 @@
 	</div>
 	
 	@if(!is_null($uAsesmen->berita_acara))
+	
 	<div class="card-body">
 		<ul class="list-group">
 		  <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -26,9 +27,9 @@
 		  </li>
 	  	</ul>
 	</div>
-	@endif
 
-	@if(is_null($uAsesmen->berita_acara))
+	@else
+
 	<div class="card-footer">
 	  <form wire:submit.prevent="uploadBeritaAcara">
 		<div class="form-group">
@@ -47,6 +48,7 @@
 		<button wire:loading.attr="disabled" wire:target="beritaAcara,uploadBeritaAcara" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
 	  </form>
 	</div>
+	
 	@endif
 </div>
 @endif
