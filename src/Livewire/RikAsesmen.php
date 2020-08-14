@@ -90,7 +90,11 @@ class RikAsesmen extends Component
 			'navTarget' => $navTarget,
 			'uAsesmen' => $uAsesmen,
 			'statistik' => json_encode($statistik),
-			'daftarKonfirmasi' => $uAsesmen->getPertanyaan()->with('pilihan.jawaban')->whereHas('informasi', function($query) { $query->where('confirm', true); })->get()
+			'daftarKonfirmasi' => $uAsesmen->getPertanyaan()
+				->with(['pilihan.jawaban', 'area', 'aspek'])
+				->whereHas('informasi', function($query) { $query->where('confirm', true); })
+				->where('teks', 'like', $searchTerm)
+				->get()
 		]);
 	}
 
@@ -172,7 +176,6 @@ class RikAsesmen extends Component
 
 	}
 
-
 	public function uploadBeritaAcara()
 	{
 		$this->validate([
@@ -248,7 +251,8 @@ class RikAsesmen extends Component
 	public function loadCekLapangan()
 	{
 		$this->isCekLapangan = true;
-		$this->isRecheck = true;
+		$this->isRecheck = false;
+		$this->reset('search', 'navLink');
 	}
 
 	public function confirmJawaban($informasiId)
@@ -271,5 +275,22 @@ class RikAsesmen extends Component
 		$informasi->save();
 
         $this->reset('jawabanId', 'catatanId');
+	}
+
+	public function updateConfirmJawaban($informasiId, $pertanyaanId)
+	{
+		$informasi = Informasi::find($informasiId);
+
+		if(array_key_exists($pertanyaanId, $this->jawaban))
+		{
+			$informasi->jawaban_2 = $this->jawaban[$pertanyaanId];
+		}
+
+		if(array_key_exists($pertanyaanId, $this->catatan))
+		{
+			$informasi->catatan = $this->catatan[$pertanyaanId];
+		}
+
+		$informasi->save();
 	}
 }

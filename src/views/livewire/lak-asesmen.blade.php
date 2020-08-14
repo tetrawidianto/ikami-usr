@@ -35,14 +35,14 @@
 				@include('ikami-usr::livewire.lak-oa-2')
 			@endif
 		  @else
-			@include('ikami-usr::livewire.lak-da-1')
+			@include('ikami-usr::livewire.lak-sa-1')
 		  @endif
 
 		@else
 		  @if($isCekLapangan)
 			@include('ikami-usr::livewire.lak-oa-2')
 		  @else
-			@include('ikami-usr::livewire.lak-da-2')
+			@include('ikami-usr::livewire.lak-sa-2')
 		  @endif
 		@endif
         </div>

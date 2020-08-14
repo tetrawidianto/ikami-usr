@@ -2,15 +2,6 @@
 $oaIndex = $daftarKonfirmasi->where('informasi.confirmed', true)->count();
 @endphp
 
-@if($daftarKonfirmasi->count() == $daftarKonfirmasi->where('informasi.confirmed', true)->count())
-	
-	<div class="alert alert-success alert-dismissible">
-	    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-	    <h5><i class="icon fas fa-check"></i> Onsite Assessment</h5>
-	    <small>Anda telah menyelesaikan Onsite Assessment <b>Indeks KAMI</b>. <a  href="javascript:void(0)">Periksa kembali</a></small>
-	</div>
-
-@else
 <h4>
 	Onsite Assessment #{{ $oaIndex + 1 }} 
 </h4>
@@ -52,4 +43,3 @@ $oaIndex = $daftarKonfirmasi->where('informasi.confirmed', true)->count();
       </form>
 	</div>
 </div>
-@endif

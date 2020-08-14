@@ -1,4 +1,4 @@
-@if($uAsesmen->terevaluasiSemua() && ( (!$daftarKonfirmasi->isEmpty() && $daftarKonfirmasi->where('informasi.confirmed', true)->count() == $daftarKonfirmasi->count()) || $daftarKonfirmasi->isEmpty() ))
+@if($uAsesmen->terevaluasiSemua() && ( (!$daftarKonfirmasi->isEmpty() && $daftarKonfirmasi->where('informasi.confirmed', true)->count() == $daftarKonfirmasi->count()) || $daftarKonfirmasi->isEmpty() ) && !$isRecheck)
 <div class="card card-primary">
 	<div class="card-header">
 		<div class="card-title">
