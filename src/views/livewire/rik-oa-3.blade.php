@@ -25,6 +25,7 @@
   </div>
   <div class="card-body">
     <form wire:submit.prevent="updateConfirmJawaban('{{ $konfirmasi->informasi->id }}', '{{ $konfirmasi->id }}')">
+    
     <div class="form-group">
       @foreach($konfirmasi->pilihan->jawaban as $jawaban)
       <div class="custom-control custom-radio">
@@ -48,13 +49,15 @@
         </label>
       </div>
       @endforeach
-      
     </div>
+
     <div class="form-group">
       <span class="help-block"><i>{{ $konfirmasi->informasi->catatan }}</i></span>
       <input wire:model="catatan.{{ $konfirmasi->id }}" type="text" class="form-control w-auto" placeholder="Catatan:">
     </div>
+
     <button wire:loading.attr="disabled" wire:target="updateConfirmJawaban" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
+  </form>
   </div>
 </div>
 @endforeach
