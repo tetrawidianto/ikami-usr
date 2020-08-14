@@ -38,7 +38,11 @@
         @if($jawaban->id == $konfirmasi->informasi->jawaban_2)
         checked
         @endif
-        {{-- disabled --}}
+        
+        @if($uAsesmen->selesai)
+        disabled
+        @endif
+
         >
         <label for="customRadio{{ $konfirmasi->id }}-{{ $jawaban->id }}" class="custom-control-label">
           @if($jawaban->id == $konfirmasi->informasi->jawaban_1)
@@ -53,10 +57,14 @@
 
     <div class="form-group">
       <span class="help-block"><i>{{ $konfirmasi->informasi->catatan }}</i></span>
+      @if(!$uAsesmen->selesai)
       <input wire:model="catatan.{{ $konfirmasi->id }}" type="text" class="form-control w-auto" placeholder="Catatan:">
+      @endif
     </div>
-
+    
+    @if(!$uAsesmen->selesai)
     <button wire:loading.attr="disabled" wire:target="updateConfirmJawaban" class="btn btn-primary"><i class="fas fa-save"></i> Simpan</button>
+    @endif
   </form>
   </div>
 </div>
