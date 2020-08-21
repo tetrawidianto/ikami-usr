@@ -56,6 +56,7 @@
   <!-- /.card-body -->
 </div>
 
+@if($uAsesmen->terjawabSemua() && !$daftarKonfirmasi->isEmpty())
 <div class="card">
 	<div class="card-body p-0">
 		<ul class="nav nav-pills flex-column">
@@ -69,3 +70,4 @@
 		</ul>
 	</div>
 </div>
+@endif

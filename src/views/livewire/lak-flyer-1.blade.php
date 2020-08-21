@@ -131,3 +131,21 @@
   @endif
 
 @endif
+
+@push('js')
+  <script>
+    function upgrade()
+    {
+      var jawaban = prompt("Silakan ketik: desktop-assessment");
+
+      if(jawaban == 'desktop-assessment')
+      {
+        return true
+      }
+      else
+      {
+        alert('Jawaban tidak sesuai!')
+      }
+    }
+  </script>
+@endpush
