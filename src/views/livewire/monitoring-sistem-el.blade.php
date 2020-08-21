@@ -56,8 +56,8 @@
             <th>Nama Sistem El</th>
             <th>Penyedia</th>
             <th>Sektor</th>
-            <th><i>SA</i></th>
-            <th><i>DA</i></th>
+            {{-- <th><i>SA</i></th> --}}
+            {{-- <th><i>DA</i></th> --}}
             <th>Kategori</th>
             <th>Predikat</th>
 
@@ -70,8 +70,8 @@
             <td>{{ $sistemEl->nama }}</td>
             <td>{{ $sistemEl->penyedia->nama }}</td>
             <td>{{ $sistemEl->sektor->nama }}</td>
-            <td>{{ $sistemEl->asesmen->count() }}</td>
-            <td>{{ $sistemEl->asesmen->where('desktop_assessment', true)->count() }}</td>
+            {{-- <td>{{ $sistemEl->asesmen->count() }}</td> --}}
+            {{-- <td>{{ $sistemEl->asesmen->where('desktop_assessment', true)->count() }}</td> --}}
             <td><span class="text-{{ $sistemEl->latestDa ? $sistemEl->latestDa->kategoriSistemEl->color : 'default' }}">{{ $sistemEl->latestDa ? $sistemEl->latestDa->kategoriSistemEl->nama : '' }}</span></td>
             <td><span class="text-{{ $sistemEl->latestDa ? $sistemEl->latestDa->opini->color : 'default' }}">{{ $sistemEl->latestDa ? $sistemEl->latestDa->opini->nama : '' }}</span></td>
 
