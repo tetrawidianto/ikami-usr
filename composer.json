@@ -9,7 +9,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "livewire/livewire": "dev-master"
+        "livewire/livewire": "^1.0"
     },
     "autoload": {
         "psr-4": {
